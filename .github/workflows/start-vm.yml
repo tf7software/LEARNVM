@@ -7,17 +7,21 @@ on:
 
 jobs:
   run-vm:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest # Using the default GitHub Actions runner (which will run Node 20 soon)
+
     steps:
+    # Step 1: Checkout code using the latest version of actions/checkout, which supports Node 20
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Install QEMU for running virtual machines
     - name: Install QEMU
       run: sudo apt-get update && sudo apt-get install -y qemu
 
+    # Step 3: Download the TinyCore Linux ISO
     - name: Download TinyCore ISO
       run: wget http://tinycorelinux.net/11.x/x86/release/Core-current.iso -O tinycore.iso
 
+    # Step 4: Start the TinyCore Linux VM using QEMU
     - name: Run VM
       run: qemu-system-x86_64 -m 512M -cdrom ./tinycore.iso -boot d -vnc :0
