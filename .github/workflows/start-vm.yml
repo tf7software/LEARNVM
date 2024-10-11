@@ -1,0 +1,23 @@
+name: Start TinyCore VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-vm:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install QEMU
+      run: sudo apt-get update && sudo apt-get install -y qemu
+
+    - name: Download TinyCore ISO
+      run: wget http://tinycorelinux.net/11.x/x86/release/Core-current.iso -O tinycore.iso
+
+    - name: Run VM
+      run: qemu-system-x86_64 -m 512M -cdrom ./tinycore.iso -boot d -vnc :0
